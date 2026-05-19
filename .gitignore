@@ -1,10 +1,7 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
-/node_modules
+node_modules/
 /.pnp
 .pnp.js
-.yarn/install-state.gz
 
 # testing
 /coverage
@@ -25,12 +22,22 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# local env files
+# local env files — NEVER COMMIT
+.env.local
 .env*.local
 
-# vercel
+# CSV data files — may contain sensitive price data
+data/*.csv
+*.csv
+harga_emas_lama.csv
+
+# Scripts output & temp files
+scripts/output/
+scripts/*.log
+
+# Vercel
 .vercel
 
-# typescript
+# TypeScript
 *.tsbuildinfo
 next-env.d.ts

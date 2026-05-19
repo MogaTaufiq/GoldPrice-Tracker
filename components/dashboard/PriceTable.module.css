@@ -1,0 +1,91 @@
+.tableWrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 calc(-1 * var(--sp-4));
+  padding: 0 var(--sp-4);
+}
+
+@media (min-width: 768px) {
+  .tableWrapper {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.table thead tr {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.thDate, .thPrice, .thStatus {
+  padding: var(--sp-3) var(--sp-4);
+  text-align: left;
+  font-weight: var(--fw-semi);
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.thPrice {
+  text-align: right;
+}
+
+.thStatus {
+  text-align: center;
+}
+
+.row {
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  transition: background-color var(--transition-fast);
+}
+
+.row:hover {
+  background: var(--color-surface-hover);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.tdDate {
+  padding: var(--sp-3) var(--sp-4);
+  color: var(--color-text-secondary);
+  white-space: nowrap;
+  font-weight: var(--fw-medium);
+}
+
+.tdPrice {
+  padding: var(--sp-3) var(--sp-4);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.tdStatus {
+  padding: var(--sp-3) var(--sp-4);
+  text-align: center;
+}
+
+.empty {
+  color: var(--color-text-muted);
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  padding: var(--sp-2) 0;
+}
+
+.skeletonRow {
+  height: 44px;
+  border-radius: var(--radius-sm);
+}
