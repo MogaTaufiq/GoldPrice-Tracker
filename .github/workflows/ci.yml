@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '24'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Lint code
+      run: npm run lint
+
+    - name: Run unit tests
+      run: npm run test
+
+    - name: Build Next.js application
+      run: npm run build
+      env:
+        # Provide dummy or fallback env vars needed during next build if any
+        NEXT_PUBLIC_SUPABASE_URL: https://dummy-project.supabase.co
+        NEXT_PUBLIC_SUPABASE_ANON_KEY: dummy-anon-key
+        JWT_SECRET: dummy-jwt-secret-long-enough-for-testing-purposes
+        CRON_SECRET: dummy-cron-secret
