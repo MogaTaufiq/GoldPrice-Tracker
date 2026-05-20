@@ -3,6 +3,7 @@
 import { useState, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import NasrilInput from '@/components/dashboard/NasrilInput'
+import LogViewer from '@/components/admin/LogViewer'
 import styles from './page.module.css'
 
 export default function AdminPage() {
@@ -99,12 +100,9 @@ export default function AdminPage() {
             <NasrilInput onSaved={() => setFetchMsg('✅ Harga Nasril berhasil disimpan!')} />
           </section>
           
-          {/* Placeholder for Data Table / Edit / Logs later */}
+          {/* Error Log Viewer */}
           <section className={`card ${styles.section}`} style={{ gridColumn: '1 / -1' }}>
-            <h2 className={styles.sectionTitle}>Tabel Editor & Log (Segera Hadir)</h2>
-            <p className="text-muted" style={{ fontSize: '0.9rem', marginTop: 'var(--sp-2)' }}>
-              Fitur untuk mengedit/menghapus data dan melihat log error akan ditambahkan di sini.
-            </p>
+            <LogViewer />
           </section>
         </div>
       </main>

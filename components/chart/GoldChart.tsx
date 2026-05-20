@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useCallback, useRef } from 'react'
+import { useRef } from 'react'
 import {
   Chart as ChartJS,
   CategoryScale,
