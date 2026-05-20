@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
 import { createServerSupabaseClient } from '@/lib/supabase'
 import type { GoldPrice } from '@/types'
 
@@ -13,9 +13,8 @@ import type { GoldPrice } from '@/types'
  * 3. Send email via Resend to BACKUP_EMAIL_TO
  * 4. Log result to fetch_logs table
  */
-export async function GET(req: NextRequest) {
+export async function GET() {
   const startTime = Date.now()
-  let status: 'success' | 'error' = 'success'
   let message = ''
 
   try {
@@ -46,7 +45,7 @@ export async function GET(req: NextRequest) {
       throw new Error('Missing Resend or email config: RESEND_API_KEY, BACKUP_EMAIL_TO, or BACKUP_EMAIL_FROM')
     }
 
-    const emailResult = await sendBackupEmail({
+    await sendBackupEmail({
       apiKey: resendApiKey,
       to: backupEmailTo,
       from: backupEmailFrom,
@@ -74,7 +73,6 @@ export async function GET(req: NextRequest) {
     })
   } catch (err) {
     const errorMsg = String(err)
-    status = 'error'
     message = errorMsg
 
     // Log error to fetch_logs

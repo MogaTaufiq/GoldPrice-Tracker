@@ -1,6 +1,6 @@
 import type { GoldPrice, PriceCardData, GoldSource } from '@/types'
-import { percentChange } from '@/lib/format'
-import { interpolateGaps, calculateSMA } from '@/lib/calculations/moving-average'
+import { percentChange } from '../format.ts'
+import { interpolateGaps, calculateSMA } from './moving-average.ts'
 
 const SOURCE_LABELS: Record<GoldSource, string> = {
   antam: 'Antam',

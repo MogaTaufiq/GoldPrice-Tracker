@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { jwtVerify } from 'jose'
 
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET ?? 'fallback-secret-change-me')
 const COOKIE_NAME = 'invest_admin_token'
@@ -9,6 +8,54 @@ const PROTECTED_PAGES = ['/admin']
 // /api/fetch POST is protected but can also be called with CRON_SECRET
 const PROTECTED_API = ['/api/import', '/api/prices', '/api/logs']
 const PROTECTED_API_WITH_FETCH_EXCEPTION = ['/api/fetch']
+
+async function verifyJWT(token: string, secret: Uint8Array): Promise<boolean> {
+  try {
+    const parts = token.split('.')
+    if (parts.length !== 3) return false
+    const [headerB64, payloadB64, signatureB64] = parts
+
+    const base64urlDecode = (str: string) => {
+      let base64 = str.replace(/-/g, '+').replace(/_/g, '/')
+      while (base64.length % 4) {
+        base64 += '='
+      }
+      return atob(base64)
+    }
+
+    // Decode header and verify alg is HS256
+    const header = JSON.parse(base64urlDecode(headerB64))
+    if (header.alg !== 'HS256') return false
+
+    // Decode payload and verify expiration
+    const payload = JSON.parse(base64urlDecode(payloadB64))
+    if (payload.exp && Date.now() / 1000 >= payload.exp) {
+      return false
+    }
+
+    // Import the secret key for HMAC verification
+    const key = await crypto.subtle.importKey(
+      'raw',
+      secret as unknown as ArrayBuffer,
+      { name: 'HMAC', hash: 'SHA-256' },
+      false,
+      ['verify']
+    )
+
+    // Decode signature to binary array
+    const sigStr = base64urlDecode(signatureB64)
+    const sigBuf = new Uint8Array(sigStr.length)
+    for (let i = 0; i < sigStr.length; i++) {
+      sigBuf[i] = sigStr.charCodeAt(i)
+    }
+
+    // Verify signature
+    const data = new TextEncoder().encode(`${headerB64}.${payloadB64}`)
+    return await crypto.subtle.verify('HMAC', key, sigBuf as unknown as ArrayBuffer, data as unknown as ArrayBuffer)
+  } catch {
+    return false
+  }
+}
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
@@ -36,9 +83,8 @@ export async function middleware(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    try {
-      await jwtVerify(token, JWT_SECRET)
-    } catch {
+    const isValid = await verifyJWT(token, JWT_SECRET)
+    if (!isValid) {
       if (isProtectedPage) {
         return NextResponse.redirect(new URL('/login', req.url))
       }
@@ -60,3 +106,4 @@ export async function middleware(req: NextRequest) {
 export const config = {
   matcher: ['/admin/:path*', '/api/fetch', '/api/import', '/api/logs/:path*', '/api/prices/:path*', '/api/cron', '/api/backup', '/api/cleanup'],
 }
+

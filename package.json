@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "node --experimental-strip-types --test tests/**/*.test.ts",
     "gen:password": "node -e \"const b=require('bcryptjs'),p=process.argv[1];if(!p){console.error('Usage: npm run gen:password -- YOUR_PASSWORD');process.exit(1)}b.hash(p,10).then(h=>{console.log('\\nADMIN_PASSWORD_HASH=\\\"'+h.replace(/\\$/g,'\\\\$')+'\\\"\\n')})\" --",
     "gen:secrets": "node -e \"const c=require('crypto');console.log('JWT_SECRET='+c.randomBytes(32).toString('base64'));console.log('CRON_SECRET='+c.randomBytes(32).toString('base64'));\""
   },

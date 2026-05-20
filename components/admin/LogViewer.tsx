@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import type { FetchLog } from '@/types'
 import { formatTimestampWIB } from '@/lib/format'
 import styles from './LogViewer.module.css'
@@ -16,11 +16,7 @@ export default function LogViewer() {
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all')
   const limit = 20
 
-  useEffect(() => {
-    fetchLogs(page)
-  }, [page, statusFilter])
-
-  async function fetchLogs(p: number) {
+  const fetchLogs = useCallback(async (p: number) => {
     setLoading(true)
     setError(null)
     try {
@@ -39,7 +35,11 @@ export default function LogViewer() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [statusFilter])
+
+  useEffect(() => {
+    fetchLogs(page)
+  }, [page, fetchLogs])
 
   const totalPages = Math.ceil(totalCount / limit)
 
