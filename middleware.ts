@@ -60,6 +60,18 @@ async function verifyJWT(token: string, secret: Uint8Array): Promise<boolean> {
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
 
+  // Check if visiting /login and already authenticated
+  if (pathname === '/login') {
+    const token = req.cookies.get(COOKIE_NAME)?.value
+    if (token) {
+      const isValid = await verifyJWT(token, JWT_SECRET)
+      if (isValid) {
+        return NextResponse.redirect(new URL('/admin', req.url))
+      }
+    }
+    return NextResponse.next()
+  }
+
   // Check if this is a protected page
   const isProtectedPage = PROTECTED_PAGES.some(p => pathname.startsWith(p))
 
@@ -104,6 +116,17 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/api/fetch', '/api/import', '/api/logs/:path*', '/api/prices/:path*', '/api/cron', '/api/backup', '/api/cleanup'],
+  matcher: [
+    '/admin',
+    '/admin/:path*',
+    '/login',
+    '/api/fetch',
+    '/api/import',
+    '/api/logs/:path*',
+    '/api/prices/:path*',
+    '/api/cron',
+    '/api/backup',
+    '/api/cleanup'
+  ],
 }
 
