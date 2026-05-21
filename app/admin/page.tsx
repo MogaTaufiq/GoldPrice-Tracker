@@ -11,7 +11,13 @@ export default function AdminPage() {
   const [fetchingToday, setFetchingToday] = useState(false)
   const [fetchMsg, setFetchMsg] = useState<string | null>(null)
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth', { method: 'DELETE' })
+    } catch (err) {
+      console.error('[admin] Failed to logout API:', err)
+    }
+    // Clear client-side cookie if it was not httpOnly (fallback)
     document.cookie = 'invest_admin_token=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT'
     router.push('/')
   }
