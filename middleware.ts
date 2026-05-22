@@ -104,10 +104,12 @@ export async function middleware(req: NextRequest) {
     }
   }
 
-  // Protect cron endpoint with CRON_SECRET header
+  // Protect cron endpoint with CRON_SECRET header or Vercel scheduled request header
   if (pathname.startsWith('/api/cron') || pathname.startsWith('/api/backup') || pathname.startsWith('/api/cleanup')) {
     const cronSecret = req.headers.get('x-cron-secret') ?? req.nextUrl.searchParams.get('secret')
-    if (cronSecret !== process.env.CRON_SECRET) {
+    const isVercelCron = req.headers.get('x-vercel-cron') === 'true' || req.headers.has('x-vercel-cron-job-name')
+
+    if (cronSecret !== process.env.CRON_SECRET && !isVercelCron) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
   }

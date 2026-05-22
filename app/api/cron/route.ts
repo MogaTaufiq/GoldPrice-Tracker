@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import { runAllFetchers } from '@/lib/fetchers'
 
 // GET /api/cron — called by Vercel Cron at 12:00 WIB daily
-// Auth: x-cron-secret header (enforced by middleware.ts)
+// Auth: x-cron-secret header or Vercel Cron request header (enforced by middleware.ts)
 export async function GET() {
   const startTime = Date.now()
 
