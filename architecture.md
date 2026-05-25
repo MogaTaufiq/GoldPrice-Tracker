@@ -241,7 +241,7 @@ All times in UTC. WIB = UTC+7.
 
 | Job | UTC Schedule | WIB Time |
 |---|---|---|
-| Daily price fetch | `0 5 * * *` | 12:00 WIB daily |
+| Daily price fetch | `0 6 * * *` | 13:00 WIB daily |
 | Monthly cleanup | `0 5 1 * *` | 12:00 WIB, 1st of month |
 | Quarterly backup | `0 5 1 1,4,7,10 *` | 12:00 WIB, Jan/Apr/Jul/Oct 1st |
 

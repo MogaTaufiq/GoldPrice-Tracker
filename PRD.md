@@ -29,7 +29,7 @@
 ### 3.1 Antam
 - **Source**: emas.maulanar.my.id API
 - **Fields**: Harga Jual (price_sell), Harga Beli (price_buy) in IDR/gram
-- **Update**: Daily automatic, 12:00 PM WIB
+- **Update**: Daily automatic, 1:00 PM WIB
 - **Sanity check**: Rp 1,000,000 – Rp 5,000,000/gram
 - **On error**: Log to `fetch_logs`, show last known value with ⚠️ warning
 
@@ -37,7 +37,7 @@
 - **Source**: Yahoo Finance (USD price) + Frankfurter (USD→IDR rate)
 - **Formula**: `(usd_price / 31.1035) × usd_rate`
 - **Fields**: price_sell in IDR/gram
-- **Update**: Daily automatic, 12:00 PM WIB
+- **Update**: Daily automatic, 1:00 PM WIB
 - **Sanity check**: Same as Antam
 - **On error**: Same as Antam
 
@@ -121,7 +121,7 @@ Primary signal source: **Antam Jual** (most relevant for buy decisions).
 ## 6. Automated Systems
 
 ### 6.1 Daily Price Fetch (Cron)
-- **Time**: 12:00 PM WIB every day (Vercel Cron: `0 5 * * *` UTC)
+- **Time**: 1:00 PM WIB every day (Vercel Cron: `0 6 * * *` UTC)
 - **Sources**: Antam + International (Nasril is manual only)
 - **Behavior**: Log result regardless of success/failure
 
