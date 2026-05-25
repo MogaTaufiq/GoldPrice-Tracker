@@ -75,7 +75,7 @@ export default function AdminPage() {
               <div>
                 <h2 className={styles.sectionTitle}>Fetch API Otomatis</h2>
                 <p className="text-muted" style={{ fontSize: '0.85rem', margin: '4px 0 0 0' }}>
-                  Tarik harga hari ini dari Antam & International
+                  Tarik harga hari ini & isi kekosongan data 30 hari terakhir dari Antam & International
                 </p>
               </div>
               <button
