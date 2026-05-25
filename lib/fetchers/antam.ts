@@ -24,11 +24,6 @@ interface AntamPriceEntry {
   buyback_price_change?: number
 }
 
-interface AntamTodayResponse {
-  status: string
-  data: AntamPriceEntry[]
-}
-
 function getLast30DaysWIB(): string[] {
   const wibDateStr = new Date().toLocaleDateString('sv-SE', { timeZone: 'Asia/Jakarta' })
   const [year, month, day] = wibDateStr.split('-').map(Number)
